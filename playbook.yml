@@ -8,5 +8,6 @@
         state: latest
         update_cache: yes
   roles:
-    - git
+#    - git
+    - nginx
     - php7

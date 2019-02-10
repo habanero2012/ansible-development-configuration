@@ -24,3 +24,13 @@
   template:
     src: php.ini
     dest: /etc/php.ini
+
+- name: deploy www.conf
+  template:
+    src: www.conf
+    dest: /etc/php-fpm.d/www.conf
+
+- command: chkconfig php-fpm on
+- command: service php-fpm restart
+- command: chown nginx /var/lib/php/session
+- command: chgrp nginx /var/lib/php/session
