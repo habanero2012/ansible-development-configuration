@@ -1,0 +1,24 @@
+---
+- name: Get phpMyAdmin
+  unarchive:
+    src: "https://files.phpmyadmin.net/phpMyAdmin/4.8.5/phpMyAdmin-4.8.5-all-languages.tar.gz"
+    dest: "/tmp"
+    remote_src: yes
+    creates: "/usr/share/nginx/phpmyadmin"
+
+- name: mv phpMyAdmin
+  shell: "mv /tmp/phpMyAdmin-4.8.5-all-languages /usr/share/nginx/phpmyadmin"
+  args:
+    creates: "/usr/share/nginx/phpmyadmin"
+
+- name: deploy config.inc.php
+  template:
+    src: config.inc.php
+    dest: /usr/share/nginx/phpmyadmin/config.inc.php
+
+- name: deploy phpmyadmin.conf to nginx
+  template:
+    src: phpmyadmin.conf
+    dest: /etc/nginx/conf.d/phpmyadmin.conf
+
+- command: service nginx restart
