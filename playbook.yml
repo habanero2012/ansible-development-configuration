@@ -6,5 +6,5 @@
 #    - git
 #    - nginx
 #    - php7
-#    - mysql57
-    - phpmyadmin
+    - mysql57
+#    - phpmyadmin
