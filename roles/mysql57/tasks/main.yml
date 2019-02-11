@@ -1,0 +1,21 @@
+---
+- name: add mysql repository
+  command: rpm -ih http://dev.mysql.com/get/mysql57-community-release-el7-8.noarch.rpm creates=/etc/yum.repos.d/mysql-community.repo
+
+- name: install mysql 5.7
+  yum: name={{ packages }} state=installed
+  vars:
+    packages:
+    - mysql-community-server
+    - mysql
+    - mysql-devel
+
+- name: deploy my.cnf
+  template:
+    src: my.cnf
+    dest: /etc/my.cnf
+
+- name: start mysql-server
+  service: name=mysqld state=started enabled=yes
+
+- command: systemctl enable mysqld.service
