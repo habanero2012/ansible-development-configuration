@@ -1,0 +1,49 @@
+---
+- name: install dependencies
+  yum: name={{ packages }}
+  vars:
+    packages:
+    - gcc
+    - openssl-devel
+    - libyaml-devel
+    - readline-devel
+    - zlib-devel
+    - libffi-devel
+
+- name: install rbenv
+  git:
+    repo: https://github.com/sstephenson/rbenv.git
+    dest: /usr/local/rbenv
+
+- name: deploy rbenv.sh
+  template:
+    src: rbenv.sh
+    dest: /etc/profile.d/rbenv.sh
+    owner: root
+    group: root
+    mode: 0755
+
+- name: install ruby-build
+  git:
+    repo: https://github.com/sstephenson/ruby-build.git
+    dest: /usr/local/rbenv/plugins/ruby-build
+
+- name: change permission
+  file:
+    path: /usr/local/rbenv
+    owner: vagrant
+    group: vagrant
+    recurse: yes
+    state: directory
+
+- name: install ruby
+  shell: bash -lc "rbenv install --skip-existing 2.6.1"
+
+- name: set global ruby version
+  shell: bash -lc "rbenv global 2.6.1"
+
+- name: install bundler
+  gem:
+    name: bundler
+    user_install: no
+    executable: /usr/local/rbenv/shims/gem
